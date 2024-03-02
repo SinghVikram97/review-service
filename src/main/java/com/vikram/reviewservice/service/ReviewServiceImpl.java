@@ -1,5 +1,6 @@
 package com.vikram.reviewservice.service;
 
+import com.vikram.reviewservice.delegate.CompanyServiceDelegate;
 import com.vikram.reviewservice.dto.ReviewDTO;
 import com.vikram.reviewservice.entity.ReviewEntity;
 import com.vikram.reviewservice.exception.ResourceNotFoundException;
@@ -16,6 +17,7 @@ import java.util.stream.Collectors;
 public class ReviewServiceImpl implements ReviewService{
     private final ReviewRepository reviewRepository;
     private final ModelMapper modelMapper;
+    private final CompanyServiceDelegate companyServiceDelegate;
 
     @Override
     public ReviewDTO getReview(Long id) {
@@ -31,6 +33,11 @@ public class ReviewServiceImpl implements ReviewService{
 
     @Override
     public ReviewDTO addReview(ReviewDTO reviewDto) {
+        Long companyId = reviewDto.getCompanyId();
+        // validate companyId
+        companyServiceDelegate.getCompanyById(companyId);
+
+        // If valid company
         ReviewEntity review = modelMapper.mapReviewDtoToReview(reviewDto);
         ReviewEntity savedReview = reviewRepository.save(review);
         return modelMapper.mapReviewToReviewDto(savedReview);
@@ -40,6 +47,11 @@ public class ReviewServiceImpl implements ReviewService{
     public ReviewDTO updateReview(Long id, ReviewDTO reviewDto) {
         ReviewEntity review = getReviewOrThrowException(id);
 
+        // validate company
+        Long companyId = reviewDto.getCompanyId();
+        companyServiceDelegate.getCompanyById(companyId);
+
+        // if valid company
         review.setTitle(reviewDto.getTitle());
         review.setDescription(reviewDto.getDescription());
         review.setRating(reviewDto.getRating());
