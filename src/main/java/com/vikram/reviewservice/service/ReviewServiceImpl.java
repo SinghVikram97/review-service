@@ -69,6 +69,12 @@ public class ReviewServiceImpl implements ReviewService{
         return modelMapper.mapReviewToReviewDto(review);
     }
 
+    @Override
+    public List<ReviewDTO> getReviewsByCompanyId(Long companyId) {
+        List<ReviewEntity> reviewEntityList = reviewRepository.getReviewEntityByCompanyId(companyId);
+        return reviewEntityList.stream().map(modelMapper::mapReviewToReviewDto).collect(Collectors.toList());
+    }
+
     private ReviewEntity getReviewOrThrowException(Long id){
         return reviewRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Review", "Id", id));
     }

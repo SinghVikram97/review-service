@@ -4,6 +4,8 @@ import com.vikram.reviewservice.dto.ReviewDTO;
 import com.vikram.reviewservice.service.ReviewService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -37,5 +39,11 @@ public class ReviewController {
     @PutMapping("/{id}")
     public ReviewDTO updateReview(@PathVariable Long id, @RequestBody @Valid ReviewDTO reviewDto){
         return reviewService.updateReview(id, reviewDto);
+    }
+
+    @GetMapping("/company")
+    public ResponseEntity<List<ReviewDTO>> getAllReviewsByCompanyId(@RequestParam("company_id") Long companyId){
+        List<ReviewDTO> reviewsByCompanyId = reviewService.getReviewsByCompanyId(companyId);
+        return new ResponseEntity<>(reviewsByCompanyId, HttpStatus.OK);
     }
 }
