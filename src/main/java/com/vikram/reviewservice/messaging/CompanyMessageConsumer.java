@@ -13,5 +13,14 @@ public class CompanyMessageConsumer {
     @RabbitListener(queues = "q.delete-reviews")
     public void consumeMessage(CompanyMessage companyMessage) {
         logger.info("Message received with companyId: {}",companyMessage.getCompanyId());
+        if(companyMessage.getCompanyId()==2){
+            throw new RuntimeException("Hi");
+        }
+    }
+
+    // Consumer for DLQ
+    @RabbitListener(queues = "q.delete-reviews-dlq")
+    public void consumeMessageFromDLQ(CompanyMessage companyMessage) {
+        logger.info("Message received from DLQ with companyId: {}",companyMessage.getCompanyId());
     }
 }
