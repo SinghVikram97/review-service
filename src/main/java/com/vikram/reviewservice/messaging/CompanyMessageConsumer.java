@@ -13,6 +13,5 @@ public class CompanyMessageConsumer {
     @RabbitListener(queues = "q.delete-reviews")
     public void consumeMessage(CompanyMessage companyMessage) {
         logger.info("Message received with companyId: {}",companyMessage.getCompanyId());
-
     }
 }
