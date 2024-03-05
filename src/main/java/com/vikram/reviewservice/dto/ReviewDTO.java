@@ -11,6 +11,7 @@ import lombok.*;
 @AllArgsConstructor
 @Getter
 @Setter
+@ToString
 public class ReviewDTO {
     private Long id;
     @NotEmpty
