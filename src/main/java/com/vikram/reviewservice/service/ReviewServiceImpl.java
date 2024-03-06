@@ -8,6 +8,7 @@ import com.vikram.reviewservice.mapper.ModelMapper;
 import com.vikram.reviewservice.repository.ReviewRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -73,6 +74,12 @@ public class ReviewServiceImpl implements ReviewService{
     public List<ReviewDTO> getReviewsByCompanyId(Long companyId) {
         List<ReviewEntity> reviewEntityList = reviewRepository.getReviewEntityByCompanyId(companyId);
         return reviewEntityList.stream().map(modelMapper::mapReviewToReviewDto).collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional
+    public void deleteReviewsForCompany(Long companyId) {
+        reviewRepository.deleteByCompanyId(companyId);
     }
 
     private ReviewEntity getReviewOrThrowException(Long id){

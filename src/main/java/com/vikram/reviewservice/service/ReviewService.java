@@ -16,4 +16,6 @@ public interface ReviewService {
     ReviewDTO deleteReview(Long id);
 
     List<ReviewDTO> getReviewsByCompanyId(Long companyId);
+
+    void deleteReviewsForCompany(Long companyId);
 }
